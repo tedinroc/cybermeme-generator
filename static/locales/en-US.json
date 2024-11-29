@@ -1,0 +1,39 @@
+{
+    "title": "Cyberpunk Meme Generator",
+    "selectImages": "Select Images (Multiple)",
+    "preview": "Preview",
+    "gifPreview": "GIF Preview",
+    "fpsControl": "FPS Speed Control",
+    "filterEffect": "Filter Effect",
+    "filters": {
+        "none": "No Filter",
+        "neon": "Neon Effect",
+        "matrix": "Matrix Style",
+        "glitch": "Glitch Effect",
+        "synthwave": "Synthwave Retro"
+    },
+    "watermarkText": "Watermark Text",
+    "watermarkTextPlaceholder": "Enter watermark text",
+    "watermarkPosition": "Watermark Position",
+    "positions": {
+        "top": "Top",
+        "center": "Center",
+        "bottom": "Bottom"
+    },
+    "generateButton": "Generate Meme GIF",
+    "tips": {
+        "title": "Usage Tips",
+        "multipleImages": "Upload multiple images to create an animated GIF",
+        "fpsAdjust": "Adjust FPS to control animation speed",
+        "filters": "Various cyberpunk style filters available",
+        "watermark": "Add custom watermark text",
+        "autoResize": "Images are automatically resized and compressed for better performance"
+    },
+    "loading": "Generating...",
+    "errors": {
+        "noFile": "Please select at least one image file",
+        "previewFailed": "Preview generation failed",
+        "gifPreviewFailed": "GIF preview generation failed",
+        "generateFailed": "Generation failed"
+    }
+}

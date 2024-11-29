@@ -1,0 +1,39 @@
+{
+    "title": "賽博龐克迷因生成器",
+    "selectImages": "選擇圖片（可多選）",
+    "preview": "預覽",
+    "gifPreview": "GIF 預覽",
+    "fpsControl": "FPS 速度控制",
+    "filterEffect": "濾鏡效果",
+    "filters": {
+        "none": "無濾鏡",
+        "neon": "霓虹效果",
+        "matrix": "駭客任務",
+        "glitch": "故障效果",
+        "synthwave": "復古未來"
+    },
+    "watermarkText": "浮水印文字",
+    "watermarkTextPlaceholder": "輸入浮水印文字",
+    "watermarkPosition": "浮水印位置",
+    "positions": {
+        "top": "頂部",
+        "center": "中間",
+        "bottom": "底部"
+    },
+    "generateButton": "生成迷因 GIF",
+    "tips": {
+        "title": "使用提示",
+        "multipleImages": "支援多張圖片上傳，將自動組合成 GIF",
+        "fpsAdjust": "可調整 FPS 來控制動畫速度",
+        "filters": "提供多種賽博龐克風格濾鏡效果",
+        "watermark": "可添加自訂浮水印文字",
+        "autoResize": "圖片會自動調整大小和壓縮以提高效能"
+    },
+    "loading": "生成中...",
+    "errors": {
+        "noFile": "請選擇至少一個圖片檔案",
+        "previewFailed": "預覽生成失敗",
+        "gifPreviewFailed": "GIF 預覽生成失敗",
+        "generateFailed": "生成失敗"
+    }
+}
