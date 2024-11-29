@@ -1,26 +1,34 @@
 {
-    "title": "賽博龐克迷因生成器",
-    "selectImages": "選擇圖片（可多選）",
+    "title": "賽博龐克迷因製作器",
+    "selectImages": "選擇圖片",
     "preview": "預覽",
     "gifPreview": "GIF 預覽",
     "fpsControl": "FPS 速度控制",
     "filterEffect": "濾鏡效果",
     "filters": {
-        "none": "無濾鏡",
+        "none": "無效果",
         "neon": "霓虹效果",
         "matrix": "駭客任務",
-        "glitch": "故障效果",
-        "synthwave": "復古未來"
+        "vaporwave": "蒸氣波",
+        "retro": "復古風格",
+        "glitch": "故障藝術"
     },
-    "watermarkText": "浮水印文字",
-    "watermarkTextPlaceholder": "輸入浮水印文字",
+    "speed": "播放速度",
+    "speeds": {
+        "fast": "快速",
+        "normal": "正常",
+        "slow": "慢速"
+    },
+    "watermark": "浮水印文字",
+    "watermarkPlaceholder": "輸入文字...",
     "watermarkPosition": "浮水印位置",
     "positions": {
         "top": "頂部",
         "center": "中間",
         "bottom": "底部"
     },
-    "generateButton": "生成迷因 GIF",
+    "generateButton": "生成 GIF",
+    "downloadButton": "下載 GIF",
     "tips": {
         "title": "使用提示",
         "multipleImages": "支援多張圖片上傳，將自動組合成 GIF",
@@ -34,6 +42,8 @@
         "noFile": "請選擇至少一個圖片檔案",
         "previewFailed": "預覽生成失敗",
         "gifPreviewFailed": "GIF 預覽生成失敗",
-        "generateFailed": "生成失敗"
+        "generateFailed": "生成失敗",
+        "noFiles": "請選擇至少一張圖片",
+        "uploadFailed": "上傳圖片時發生錯誤"
     }
 }

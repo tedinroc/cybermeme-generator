@@ -130,20 +130,21 @@
                         <div>
                             <label class="block text-lg font-bold mb-2" data-i18n="filterEffect">濾鏡效果</label>
                             <select id="filterSelect" class="w-full bg-black border-2 border-[#00ff9d] rounded p-2">
-                                <option value="neon">霓虹效果</option>
-                                <option value="matrix">駭客任務</option>
-                                <option value="vaporwave">蒸氣波</option>
-                                <option value="retro">復古風格</option>
-                                <option value="glitch">故障藝術</option>
+                                <option value="none" data-i18n="filters.none">無效果</option>
+                                <option value="neon" data-i18n="filters.neon">霓虹效果</option>
+                                <option value="matrix" data-i18n="filters.matrix">駭客任務</option>
+                                <option value="vaporwave" data-i18n="filters.vaporwave">蒸氣波</option>
+                                <option value="retro" data-i18n="filters.retro">復古風格</option>
+                                <option value="glitch" data-i18n="filters.glitch">故障藝術</option>
                             </select>
                         </div>
                         
                         <div>
                             <label class="block text-lg font-bold mb-2" data-i18n="speed">播放速度</label>
                             <select id="speedSelect" class="w-full bg-black border-2 border-[#00ff9d] rounded p-2">
-                                <option value="500">快速</option>
-                                <option value="800" selected>正常</option>
-                                <option value="1200">慢速</option>
+                                <option value="500" data-i18n="speeds.fast">快速</option>
+                                <option value="800" selected data-i18n="speeds.normal">正常</option>
+                                <option value="1200" data-i18n="speeds.slow">慢速</option>
                             </select>
                         </div>
                     </div>
@@ -152,14 +153,15 @@
                         <label class="block text-lg font-bold mb-2" data-i18n="watermark">浮水印文字</label>
                         <input type="text" id="watermarkText" 
                             class="w-full bg-black border-2 border-[#00ff9d] rounded p-2"
-                            placeholder="輸入文字...">
+                            data-i18n-placeholder="watermarkPlaceholder">
                     </div>
                 </div>
 
                 <div class="flex justify-center">
                     <button type="button" id="generateBtn" 
                         class="cyberpunk-button rounded-full transform hover:scale-105 
-                        transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        data-i18n="generateButton">
                         生成 GIF
                     </button>
                 </div>
@@ -178,7 +180,8 @@
         </div>
         <div class="mt-4">
             <a id="downloadBtn" download="cyberpunk.gif" 
-                class="cyberpunk-button rounded-full inline-block">
+                class="cyberpunk-button rounded-full inline-block"
+                data-i18n="downloadButton">
                 下載 GIF
             </a>
         </div>

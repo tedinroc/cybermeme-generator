@@ -94,6 +94,9 @@ def add_watermark(img, text, position='bottom'):
 # 賽博龐克風格的濾鏡效果
 def apply_cyberpunk_filter(img, style='neon'):
     """應用不同的賽博龐克風格濾鏡"""
+    if style == 'none':
+        return img
+        
     if style == 'neon':
         # 增加對比度和飽和度
         enhancer = ImageEnhance.Contrast(img)
@@ -171,8 +174,61 @@ def add_glitch_effect(img):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def resize_image(img):
-    return img.resize((800, int(800 * img.size[1] / img.size[0])))
+def resize_image(img, target_size=(800, 800)):
+    """智能調整圖片尺寸，保持比例並添加背景填充"""
+    # 獲取原始尺寸
+    original_width, original_height = img.size
+    
+    # 計算目標尺寸，保持比例
+    target_width, target_height = target_size
+    aspect_ratio = original_width / original_height
+    
+    if aspect_ratio > 1:
+        # 寬圖片
+        new_width = target_width
+        new_height = int(target_width / aspect_ratio)
+    else:
+        # 高圖片
+        new_height = target_height
+        new_width = int(target_height * aspect_ratio)
+    
+    # 調整圖片大小
+    img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+    
+    # 創建新的背景圖片
+    background = Image.new('RGB', target_size, (0, 0, 0))  # 黑色背景
+    
+    # 計算貼上位置（置中）
+    paste_x = (target_width - new_width) // 2
+    paste_y = (target_height - new_height) // 2
+    
+    # 貼上調整後的圖片
+    background.paste(img, (paste_x, paste_y))
+    
+    return background
+
+def process_image(img, filter_style='neon', watermark='', target_size=(800, 800)):
+    """處理單張圖片：調整大小、添加濾鏡和浮水印"""
+    try:
+        # 確保圖片為 RGB 模式
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        
+        # 調整圖片大小並保持比例
+        img = resize_image(img, target_size)
+        
+        # 應用濾鏡效果
+        img = apply_cyberpunk_filter(img, filter_style)
+        
+        # 添加浮水印
+        if watermark:
+            img = add_watermark(img, watermark)
+        
+        return img
+    except Exception as e:
+        print(f"圖片處理錯誤: {str(e)}")
+        traceback.print_exc()
+        return None
 
 @app.route('/')
 def home():
@@ -424,35 +480,44 @@ def generate_gif():
             return jsonify({'error': '請選擇至少一個檔案'}), 400
 
         # 獲取參數
-        filter_style = request.form.get('filter', 'neon')
+        filter_style = request.form.get('filter', 'none')
         speed = int(request.form.get('speed', '800'))
         watermark = request.form.get('watermark', '')
 
-        # 處理每個圖片
-        processed_images = []
+        # 先讀取所有圖片以確定最大尺寸
+        images = []
+        max_width = 0
+        max_height = 0
         for file in files:
             if file and allowed_file(file.filename):
-                # 讀取和處理圖片
                 img = Image.open(file)
-                img = img.convert('RGB')
-                
-                # 調整圖片大小
-                img = resize_image(img)
-                
-                # 應用濾鏡效果
-                img = apply_cyberpunk_filter(img, filter_style)
-                
-                # 添加浮水印
-                if watermark:
-                    img = add_watermark(img, watermark)
-                
-                # 壓縮圖片
-                img = compress_image(img)
-                
-                processed_images.append(img)
+                if img.mode != 'RGB':
+                    img = img.convert('RGB')
+                images.append(img)
+                max_width = max(max_width, img.size[0])
+                max_height = max(max_height, img.size[1])
 
-        if not processed_images:
+        if not images:
             return jsonify({'error': '沒有可處理的圖片'}), 400
+
+        # 設定目標尺寸為最大圖片的尺寸
+        target_size = (max_width, max_height)
+
+        # 處理每個圖片
+        processed_images = []
+        for img in images:
+            # 調整大小並保持比例
+            img = resize_image(img, target_size)
+            
+            # 應用濾鏡效果
+            if filter_style != 'none':
+                img = apply_cyberpunk_filter(img, filter_style)
+            
+            # 添加浮水印
+            if watermark:
+                img = add_watermark(img, watermark)
+            
+            processed_images.append(img)
 
         # 創建 GIF
         output = io.BytesIO()
