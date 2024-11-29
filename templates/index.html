@@ -117,14 +117,18 @@
         <div class="cyberpunk-card max-w-2xl mx-auto p-6 rounded-lg">
             <form id="uploadForm" class="space-y-6">
                 <div class="space-y-4">
-                    <label class="block">
-                        <span class="text-lg font-bold" data-i18n="selectImages">選擇圖片</span>
+                    <div id="dropZone" 
+                        class="relative border-2 border-dashed border-[#00ff9d] rounded-lg p-8 text-center hover:border-[#ff00ff] transition-colors duration-300">
                         <input type="file" id="imageInput" multiple accept="image/*" 
-                            class="mt-2 block w-full text-sm file:mr-4 file:py-2 file:px-4 
-                            file:rounded-full file:border-0 file:text-sm file:font-semibold
-                            file:bg-[#00ff9d] file:text-black hover:file:bg-[#ff00ff]
-                            file:cursor-pointer cursor-pointer">
-                    </label>
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div class="space-y-2">
+                            <div class="text-lg font-bold" data-i18n="selectImages">選擇圖片</div>
+                            <p class="text-sm text-gray-400" data-i18n="dropInstructions">
+                                拖放圖片到這裡，或點擊選擇檔案<br>
+                                也可以直接從剪貼簿貼上 (Ctrl+V)
+                            </p>
+                        </div>
+                    </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -196,6 +200,7 @@
         // 獲取所有需要的元素
         const uploadForm = document.getElementById('uploadForm');
         const imageInput = document.getElementById('imageInput');
+        const dropZone = document.getElementById('dropZone');
         const previewContainer = document.getElementById('previewContainer');
         const resultContainer = document.getElementById('resultContainer');
         const resultGif = document.getElementById('resultGif');
@@ -208,8 +213,51 @@
         
         // 設置加載動畫
         loadingOverlay.className = 'loading hidden';
-        loadingOverlay.innerHTML = '<div class="loading-text glitch">生成中...</div>';
+        loadingOverlay.innerHTML = '<div class="loading-text glitch" data-i18n="loading">生成中...</div>';
         document.body.appendChild(loadingOverlay);
+
+        // 處理拖放
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-[#ff00ff]');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-[#ff00ff]');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-[#ff00ff]');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                imageInput.files = files;
+                refreshPreviews();
+            }
+        });
+
+        // 處理剪貼簿
+        document.addEventListener('paste', (e) => {
+            const items = e.clipboardData.items;
+            const imageFiles = [];
+            
+            for (let item of items) {
+                if (item.type.indexOf('image') !== -1) {
+                    const file = item.getAsFile();
+                    imageFiles.push(file);
+                }
+            }
+            
+            if (imageFiles.length > 0) {
+                // 創建新的 FileList 物件
+                const dataTransfer = new DataTransfer();
+                imageFiles.forEach(file => dataTransfer.items.add(file));
+                imageInput.files = dataTransfer.files;
+                refreshPreviews();
+            }
+        });
 
         // 處理表單提交
         uploadForm.addEventListener('submit', async (e) => {
@@ -253,32 +301,51 @@
             }
         });
 
-        // 預覽上傳的圖片
+        // 更新預覽
         function refreshPreviews() {
             const files = imageInput.files;
             if (!files || files.length === 0) {
                 previewContainer.innerHTML = '';
+                generateBtn.disabled = true;
                 return;
             }
 
             previewContainer.innerHTML = '';
+            generateBtn.disabled = false;
             
             for (let file of files) {
                 if (!file.type.startsWith('image/')) continue;
                 
-                const reader = new FileReader();
                 const previewDiv = document.createElement('div');
-                previewDiv.className = 'cyberpunk-card p-2';
+                previewDiv.className = 'relative group';
                 
                 const img = document.createElement('img');
-                img.className = 'w-full h-auto rounded';
+                img.className = 'w-full h-48 object-cover rounded-lg';
                 
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+                deleteBtn.innerHTML = '✕';
+                deleteBtn.onclick = (e) => {
+                    e.preventDefault();
+                    const dataTransfer = new DataTransfer();
+                    const files = imageInput.files;
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i] !== file) {
+                            dataTransfer.items.add(files[i]);
+                        }
+                    }
+                    imageInput.files = dataTransfer.files;
+                    refreshPreviews();
+                };
+                
+                const reader = new FileReader();
                 reader.onload = (e) => {
                     img.src = e.target.result;
                 };
                 
                 reader.readAsDataURL(file);
                 previewDiv.appendChild(img);
+                previewDiv.appendChild(deleteBtn);
                 previewContainer.appendChild(previewDiv);
             }
         }

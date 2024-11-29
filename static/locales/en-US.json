@@ -5,6 +5,7 @@
     "gifPreview": "GIF Preview",
     "fpsControl": "FPS Speed Control",
     "filterEffect": "Filter Effect",
+    "filterLabel": "Filter Effect",
     "filters": {
         "none": "No Effect",
         "neon": "Neon",
@@ -14,12 +15,14 @@
         "glitch": "Glitch Art"
     },
     "speed": "Playback Speed",
+    "speedLabel": "Playback Speed",
     "speeds": {
         "fast": "Fast",
         "normal": "Normal",
         "slow": "Slow"
     },
     "watermark": "Watermark Text",
+    "watermarkLabel": "Watermark Text",
     "watermarkPlaceholder": "Enter text...",
     "watermarkPosition": "Watermark Position",
     "positions": {
@@ -29,6 +32,7 @@
     },
     "generateButton": "Generate GIF",
     "downloadButton": "Download GIF",
+    "dropInstructions": "Drop images here, or click to select files\nYou can also paste from clipboard (Ctrl+V)",
     "tips": {
         "title": "Usage Tips",
         "multipleImages": "Upload multiple images to create an animated GIF",

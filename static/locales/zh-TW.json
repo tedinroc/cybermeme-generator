@@ -1,18 +1,13 @@
 {
-    "title": "賽博龐克迷因製作器",
+    "title": "賽博龐克迷因生成器",
     "selectImages": "選擇圖片",
+    "dropInstructions": "拖放圖片到這裡，或點擊選擇檔案\n也可以直接從剪貼簿貼上 (Ctrl+V)",
     "preview": "預覽",
     "gifPreview": "GIF 預覽",
     "fpsControl": "FPS 速度控制",
     "filterEffect": "濾鏡效果",
-    "filters": {
-        "none": "無效果",
-        "neon": "霓虹效果",
-        "matrix": "駭客任務",
-        "vaporwave": "蒸氣波",
-        "retro": "復古風格",
-        "glitch": "故障藝術"
-    },
+    "filterLabel": "濾鏡效果",
+    "speedLabel": "播放速度",
     "speed": "播放速度",
     "speeds": {
         "fast": "快速",
@@ -20,6 +15,7 @@
         "slow": "慢速"
     },
     "watermark": "浮水印文字",
+    "watermarkLabel": "浮水印文字",
     "watermarkPlaceholder": "輸入文字...",
     "watermarkPosition": "浮水印位置",
     "positions": {
@@ -38,6 +34,8 @@
         "autoResize": "圖片會自動調整大小和壓縮以提高效能"
     },
     "loading": "生成中...",
+    "error": "發生錯誤",
+    "success": "生成成功！",
     "errors": {
         "noFile": "請選擇至少一個圖片檔案",
         "previewFailed": "預覽生成失敗",
@@ -45,5 +43,13 @@
         "generateFailed": "生成失敗",
         "noFiles": "請選擇至少一張圖片",
         "uploadFailed": "上傳圖片時發生錯誤"
+    },
+    "filters": {
+        "none": "無效果",
+        "neon": "霓虹效果",
+        "matrix": "駭客任務",
+        "vaporwave": "蒸氣波",
+        "retro": "復古風格",
+        "glitch": "故障藝術"
     }
 }
