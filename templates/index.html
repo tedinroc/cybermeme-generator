@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberMeme - 賽博迷因製作器</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                text-shadow: -2px 2px #0ff, 2px -2px #f0f;
+            }
+            25% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px -2px #0ff, -2px 2px #f0f;
+            }
+            50% {
+                transform: translate(2px, -2px);
+                text-shadow: -2px 2px #0ff, 2px -2px #f0f;
+            }
+            75% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px -2px #0ff, -2px 2px #f0f;
+            }
+            100% {
+                transform: translate(0);
+                text-shadow: -2px 2px #0ff, 2px -2px #f0f;
+            }
+        }
+
+        .cyber-glitch {
+            animation: glitch 3s infinite;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cyber-border {
+            border: 2px solid #0ff;
+            box-shadow: 0 0 10px #0ff, inset 0 0 10px #0ff;
+        }
+
+        .cyber-bg {
+            background: linear-gradient(45deg, #000428, #004e92);
+        }
+
+        .cyber-button {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border: 2px solid #0ff;
+            box-shadow: 0 0 10px #0ff;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cyber-button:hover {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 20px #0ff;
+            transform: translateY(-2px);
+        }
+
+        .cyber-input {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #0ff;
+            box-shadow: 0 0 5px #0ff;
+        }
+
+        .cyber-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 2px solid #0ff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .meme-tip {
+            font-family: 'Orbitron', sans-serif;
+            color: #0ff;
+            text-shadow: 0 0 5px #0ff;
+        }
+    </style>
+</head>
+<body class="cyber-bg min-h-screen text-blue-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="cyber-glitch text-5xl font-bold text-center mb-4 text-white">CyberMeme</h1>
+        <p class="text-center mb-8 text-xl text-blue-300">賽博龐克風格迷因製作器</p>
+        
+        <div class="max-w-xl mx-auto cyber-card rounded-lg p-8">
+            <form id="uploadForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-lg font-medium text-blue-300">
+                        選擇圖片製作迷因 GIF
+                    </label>
+                    <input type="file" 
+                           multiple 
+                           accept="image/*" 
+                           class="w-full p-3 rounded-md cyber-input text-blue-100"
+                           id="imageInput"
+                           required>
+                    <p class="meme-tip text-sm mt-2">提示: 選擇多張圖片來製作有趣的迷因序列</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-lg font-medium text-blue-300">
+                        GIF 播放速度
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <input type="range" 
+                               name="fps" 
+                               min="0.5" 
+                               max="10" 
+                               step="0.5" 
+                               value="2"
+                               class="flex-1 cyber-input"
+                               id="fpsRange">
+                        <span id="fpsValue" class="text-xl font-mono text-blue-300">2.0 FPS</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-lg font-medium text-blue-300">
+                        特效選項
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm text-blue-300">濾鏡效果</label>
+                            <select name="filter" class="w-full p-2 cyber-input text-blue-100 bg-transparent">
+                                <option value="none">無濾鏡</option>
+                                <option value="cyberpunk">賽博龐克</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm text-blue-300">故障效果</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" 
+                                       name="glitch" 
+                                       class="cyber-input h-6 w-6"
+                                       value="true">
+                                <span class="text-blue-100">啟用故障效果</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" 
+                        class="w-full cyber-button text-white py-3 px-6 rounded-md text-lg">
+                    生成迷因 GIF
+                </button>
+            </form>
+
+            <div id="preview" class="mt-8 text-center hidden">
+                <h3 class="text-xl font-medium mb-4 text-blue-300">迷因預覽</h3>
+                <div class="cyber-border p-2 rounded-lg inline-block">
+                    <img id="previewGif" class="max-w-full h-auto rounded-lg">
+                </div>
+                <a id="downloadLink" 
+                   class="cyber-button inline-block mt-6 py-3 px-6 rounded-md text-white"
+                   download="cybermeme.gif">
+                    下載迷因
+                </a>
+            </div>
+        </div>
+
+        <!-- 迷因提示 -->
+        <div class="mt-12 max-w-xl mx-auto">
+            <h3 class="cyber-glitch text-2xl font-bold mb-4 text-center">迷因創作指南</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="cyber-card p-6 rounded-lg">
+                    <h4 class="text-xl font-bold mb-2 text-blue-300">經典迷因模板</h4>
+                    <ul class="list-disc list-inside text-blue-100">
+                        <li>Drake Yes/No</li>
+                        <li>Distracted Boyfriend</li>
+                        <li>Woman Yelling at Cat</li>
+                        <li>This Is Fine</li>
+                    </ul>
+                </div>
+                <div class="cyber-card p-6 rounded-lg">
+                    <h4 class="text-xl font-bold mb-2 text-blue-300">創作技巧</h4>
+                    <ul class="list-disc list-inside text-blue-100">
+                        <li>使用對比鮮明的圖片</li>
+                        <li>保持簡單直接的訊息</li>
+                        <li>善用時事梗</li>
+                        <li>嘗試意想不到的組合</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FPS 滑桿控制
+        const fpsRange = document.getElementById('fpsRange');
+        const fpsValue = document.getElementById('fpsValue');
+        
+        fpsRange.addEventListener('input', (e) => {
+            fpsValue.textContent = `${parseFloat(e.target.value).toFixed(1)} FPS`;
+        });
+
+        // 表單提交處理
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '生成中...';
+            
+            const formData = new FormData();
+            const files = document.getElementById('imageInput').files;
+            const fps = document.querySelector('input[name="fps"]').value;
+            const filter = document.querySelector('select[name="filter"]').value;
+            const glitch = document.querySelector('input[name="glitch"]').checked;
+
+            for (let file of files) {
+                formData.append('files[]', file);
+            }
+            formData.append('fps', fps);
+            formData.append('filter', filter);
+            formData.append('glitch', glitch);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    
+                    document.getElementById('preview').classList.remove('hidden');
+                    document.getElementById('previewGif').src = url;
+                    document.getElementById('downloadLink').href = url;
+
+                    // 添加動畫效果
+                    document.getElementById('preview').style.animation = 'fadeIn 0.5s ease-in';
+                } else {
+                    const error = await response.json();
+                    alert(error.error || '生成失敗，請重試');
+                }
+            } catch (error) {
+                alert('發生錯誤，請稍後再試');
+                console.error(error);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = '生成迷因 GIF';
+            }
+        });
+
+        // 檔案選擇預覽
+        document.getElementById('imageInput').addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(f => f.name).join(', ');
+                e.target.parentElement.querySelector('.meme-tip').textContent = 
+                    `已選擇 ${files.length} 張圖片: ${fileNames}`;
+            }
+        });
+    </script>
+</body>
+</html>
