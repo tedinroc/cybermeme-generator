@@ -452,6 +452,9 @@
                 resultGif.src = data.preview;
                 downloadBtn.href = data.preview;
                 resultContainer.classList.remove('hidden');
+                
+                // 滾動到結果區域
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
             } catch (error) {
                 console.error('GIF 生成錯誤:', error);
                 alert(error.message);
